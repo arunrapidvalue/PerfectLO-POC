@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block header %}Dashboard{% endblock %}
+
+
+{% block content %}
+
+
+	<table class="table table-striped">
+		<thead>
+		  <tr>
+		    <th>Firstname</th>
+		    <th>Lastname</th>
+		    <th>Email</th>
+		    <th>Submitted</th>
+		    <th>&nbsp;</th>
+		    <td></td>
+		  </tr>
+		</thead>
+		<tbody>
+			{% for each_data in response_data %}
+			  <tr>
+			  	<td>{{each_data.borrower.first_name}}</td>
+			    <td>{{each_data.borrower.last_name}}</td>
+			    <td>{{each_data.borrower.user.email}}</td>
+			    {% if each_data.status == 2 %}
+			    	<td><span class="glyphicon">submitted</span></td>
+			    {% else %}
+			    	<td><span class="glyphicon"></span></td>
+			    {% endif %}
+			    <td> 
+			    	<div class="dropdown">
+					  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					    Action
+					  </button>
+					  <div class="dropdown-menu">
+					    <a class="dropdown-item" href="/app/resume_questionnaire/{{each_data.questionnaire_uuid}}">Resume</a>
+					    <a class="dropdown-item" href="/app/submit_questionnaire/{{each_data.questionnaire_uuid}}">Submit</a>
+					    {% if each_data.status == 2 %}
+					    <a class="dropdown-item" href="/app/export_file/{{each_data.questionnaire_uuid}}">Export File</a>
+					    <a class="dropdown-item" href="/app/questionnaire_summary/{{each_data.questionnaire_uuid}}">Questionnaire Summary</a>
+					    {% endif %}
+					  </div>
+					</div> 
+				</td>
+			  </tr>
+			{% endfor %}
+
+		</tbody>
+	</table>
+
+	<div class="row">
+		<div class="col"><br></div>
+	</div>
+
+	<div class="row">
+		<div class="col"><a href="create_questionnaire/"><button type="button" class="btn btn-secondary">Create New Questionnaire</button></a></div>
+	</div>
+
+
+{% endblock %}
+
+
+
+

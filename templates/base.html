@@ -1,0 +1,60 @@
+
+<html>
+    <head>
+		<title>PerfectLO-POC</title>
+		<!-- Latest compiled and minified CSS -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://getbootstrap.com/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/sticky-footer-navbar.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+		<header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">PerfectLO-POC</a>
+	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+	          <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarCollapse">
+	          <ul class="navbar-nav mr-auto">
+	            <!-- <li class="nav-item active">
+	              <a class="nav-link" href="#">DashBoard <span class="sr-only">(current)</span></a>
+	            </li> -->
+	          </ul>
+	        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+
+      {% if messages %}
+        <div class="alert alert-danger">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    	<h4 class="mt-5">
+    	{% block header %}
+    	{% endblock %}
+    	</h1>
+
+    	{% block content%}
+    	{% endblock %}
+
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">@PerfectLO </span>
+      </div>
+    </footer>
+    </body>
+</html>
