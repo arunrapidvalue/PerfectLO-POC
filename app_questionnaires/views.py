@@ -5,8 +5,9 @@ import shutil
 import requests
 
 from django.conf import settings
-from django.contrib import messages
 from django.shortcuts import render
+from django.contrib import messages
+from reportlab.pdfgen import canvas
 from django.views.generic import View
 from django.utils.html import strip_tags
 from django.core.exceptions import ObjectDoesNotExist
@@ -202,7 +203,6 @@ class EditQuestions(View):
 						"data":""}	
 
 		response_json_load_data = self.json_loads_byteified(response_data)
-		# import pdb;pdb.set_trace()
 		api_post_data['data'] = response_json_load_data
 
 		# ======================================= #
@@ -315,6 +315,30 @@ class ExportQuestionnaireSummary(View):
 				messages.error(request, api_response['error_text'])
 
 			return response
+
+		except ObjectDoesNotExist:
+			messages.error(request, "No questionnaire associated with this UUID")
+			return HttpResponseRedirect("/app/")
+
+
+class GetApplicationProgress(View):
+
+	def get(self, request, questionnaire_uuid=None, *args, **kwargs):
+
+		try:
+
+			questionnaire = Questionnaire.objects.get(questionnaire_uuid=questionnaire_uuid)
+			borrower_uuid = questionnaire.borrower.uuid
+
+			lo_client = PerfectLOClient()
+			api_response = lo_client.get_questionnaire_summary_data(questionnaire_uuid, borrower_uuid, )
+
+			if api_response["success"]:
+				pass
+			else:
+				messages.error(request, api_response['error_text'])
+
+
 
 		except ObjectDoesNotExist:
 			messages.error(request, "No questionnaire associated with this UUID")

@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^submit_questionnaire/(?P<questionnaire_uuid>[-\w]+)/$', SubmitQuestionnaire.as_view(), name="SubmitQuestionnaire"),
     url(r'^export_file/(?P<questionnaire_uuid>[-\w]+)/$', ExportFile.as_view(), name="ExportFile"),
     url(r'^questionnaire_summary/(?P<questionnaire_uuid>[-\w]+)/$', ExportQuestionnaireSummary.as_view(), name="ExportQuestionnaireSummary"),
+    url(r'^get_application_progress/(?P<questionnaire_uuid>[-\w]+)/$', GetApplicationProgress.as_view(), name="GetApplicationProgress"),
 
 ]

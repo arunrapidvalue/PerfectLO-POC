@@ -70,10 +70,10 @@
 		      		}
 		      	 //Expecting a dropdown
 			      if (name_val || answer_list_len>11){
-			      	if (name_val == null || name_val == "")
-			      		{
+
+			      	if (name_val == null || name_val == ""){
 			      			name_val = sub_content_looper_str
-			      		}
+			      	}
 			      	
 			      	elem = $("#id_"+name_val)
 			      	console.log(name_val)
@@ -150,7 +150,7 @@
 		json_data.AnswersGroups = t
 
 		new_json_data = json_data
-		str_response_data = JSON.stringify(new_json_data).replace(/null/g, '""');
+		str_response_data = JSON.stringify(new_json_data);
 
 		//Saving the response data to hidden field
 		$("#hdn_response").val(str_response_data)

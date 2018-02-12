@@ -135,7 +135,7 @@ class PerfectLOClient:
 
 
 	def submit_questionnaire(self, borrowerId, questionnaireId, loanOfficerId):
-		import pdb;pdb.set_trace()
+		
 		api_submit_questionnaire_url = "https://perfectlo-staging.azurewebsites.net/api/v1/submit?SubscriptionID=%s&api_key=%s"%(settings.SUBSCRIPTION_ID, settings.SUBSCRIPTION_ID)
 		post_payload = {"borrowerId": str(borrowerId),
   						"questionnaireId": str(questionnaireId),
@@ -173,13 +173,14 @@ class PerfectLOClient:
 
 	def export_questionnaire_summary(self, questionnaire_uuid, borrower_uuid):
 
-		api_export_summary_url = "https://perfectlo-staging.azurewebsites.net/api/v1/downloadquestionnairesummary "
+		api_export_summary_url = "https://perfectlo-staging.azurewebsites.net/api/v1/downloadquestionnairesummary"
 		query_params_payload = {"SubscriptionID":settings.SUBSCRIPTION_ID,
 						 		"api_key":settings.PERFECTLO_API_KEY,
 						 		"QuestionnaireId":questionnaire_uuid,
 						 		"BorrowerID":borrower_uuid}
 
-		response = requests.get(api_export_summary_url, params=query_params_payload, stream=True)
+		headers = {'Content-type': 'application/pdf', 'Accept': 'application/json'}
+		response = requests.get(api_export_summary_url, params=query_params_payload)
 
 		if response.status_code == 200:
 			self.response_dict["success_data"] = response.content
@@ -189,5 +190,29 @@ class PerfectLOClient:
 			self.response_dict["error_text"] = response.json() if response.json() else "API ERROR"
 		
 		return self.response_dict
+
+
+	def get_questionnaire_summary_data(self, questionnaire_uuid, borrower_uuid):
+		
+		api_summary_url = "https://perfectlo-staging.azurewebsites.net/api/v1/downloadquestionnairesummary"
+		query_params_payload = {"SubscriptionID":settings.SUBSCRIPTION_ID,
+						 		"api_key":settings.PERFECTLO_API_KEY,
+						 		"QuestionnaireId":questionnaire_uuid,
+						 		"BorrowerID":borrower_uuid}
+
+		headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+		response = requests.get(api_summary_url, params=query_params_payload, headers=headers)
+
+		if response.status_code == 200:
+			self.response_dict["success_data"] = response.json()
+		else:
+			self.response_dict["success"] = False
+			self.response_dict["error"] = True
+			self.response_dict["error_text"] = response.json() if response.json() else "API ERROR"
+		
+		return self.response_dict
+
+
+
 
 

@@ -33,6 +33,8 @@ class UtilityFactory(object):
         strHTML = """<div class="col-md-12">"""
         master_content = response_data["AnswersGroups"]
 
+
+
         for sub_content in master_content :
 
             # ======================================================== #
@@ -156,4 +158,4 @@ class UtilityFactory(object):
             strHTML+= """</div>"""
 
 
-            return strHTML
+        return strHTML

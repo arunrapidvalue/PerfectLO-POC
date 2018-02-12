@@ -12,6 +12,7 @@
 		    <th>Firstname</th>
 		    <th>Lastname</th>
 		    <th>Email</th>
+		    <th>% of Completion</th>
 		    <th>Submitted</th>
 		    <th>&nbsp;</th>
 		    <td></td>
@@ -24,8 +25,10 @@
 			    <td>{{each_data.borrower.last_name}}</td>
 			    <td>{{each_data.borrower.user.email}}</td>
 			    {% if each_data.status == 2 %}
+			    	<td>100</td>
 			    	<td><span class="glyphicon">submitted</span></td>
 			    {% else %}
+			    	<td></td>
 			    	<td><span class="glyphicon"></span></td>
 			    {% endif %}
 			    <td> 
