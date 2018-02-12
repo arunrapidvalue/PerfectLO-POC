@@ -4,7 +4,7 @@
 Steps for installation (Ubuntu)
 -----------------------------
 
-1 . Create a virtual environment at the desired folder - virtualenv {{env_name}}
+1 . Create a virtual environment at the desired folder using the command - virtualenv {{env_name}}
 
 2 . Create a project folder and clone the repository using the url: https://github.com/arunrapidvalue/PerfectLO-POC.git
 
