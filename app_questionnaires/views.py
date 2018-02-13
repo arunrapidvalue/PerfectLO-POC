@@ -7,7 +7,6 @@ import requests
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib import messages
-from reportlab.pdfgen import canvas
 from django.views.generic import View
 from django.utils.html import strip_tags
 from django.core.exceptions import ObjectDoesNotExist
@@ -330,44 +329,60 @@ class GetApplicationProgress(View):
 			questionnaire = Questionnaire.objects.get(questionnaire_uuid=questionnaire_uuid)
 			borrower_uuid = questionnaire.borrower.uuid
 
+			data_list = []
 			lo_client = PerfectLOClient()
 			api_response = lo_client.get_questionnaire_summary_data(questionnaire_uuid, borrower_uuid, )
 
 			if api_response["success"]:
-				pass
+
+				response_data = api_response["success_data"]
+				answers_dict = response_data['QuestionsAnswers']
+
+				personal_information_dict = answers_dict["Personal Information"]
+				property_owned_dict = answers_dict["Property Owned"]
+				mortage_terms_dict = answers_dict["Mortgage and Terms"]
+				assets_liability = answers_dict["Assets & Liabilities"]
+				income = answers_dict["Income"]
+				declaration_questions = answers_dict["Declaration Questions"]
+
+				data_list.append(personal_information_dict)
+				data_list.append(property_owned_dict)
+				data_list.append(mortage_terms_dict)
+				data_list.append(assets_liability)
+				data_list.append(income)
+				data_list.append(declaration_questions)
+				
+				total_len  = 0
+				total_len = len(personal_information_dict) + len(property_owned_dict)
+				total_len += len(mortage_terms_dict) + len(assets_liability)
+				total_len += len(income) + len(declaration_questions)
+
+				percentage_counter = 0
+				for elem in data_list:
+					for data in elem:
+						if data.get('Answers') not in (None, ''):
+							percentage_counter = percentage_counter+1
+
+				try:
+					completion_percentage = (float(percentage_counter)/float(total_len))*100
+				except:
+					completion_percentage = 0
+
+				if completion_percentage in (0,'0'):
+					completion_percentage = 1
+
 			else:
 				messages.error(request, api_response['error_text'])
-
-
 
 		except ObjectDoesNotExist:
 			messages.error(request, "No questionnaire associated with this UUID")
 			return HttpResponseRedirect("/app/")
 
-		
+		print "completion_percentage..",completion_percentage
 
+		return HttpResponse(int(completion_percentage))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 
 
 

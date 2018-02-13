@@ -15,7 +15,6 @@
 		    <th>% of Completion</th>
 		    <th>Submitted</th>
 		    <th>&nbsp;</th>
-		    <td></td>
 		  </tr>
 		</thead>
 		<tbody>
@@ -28,7 +27,7 @@
 			    	<td>100</td>
 			    	<td><span class="glyphicon">submitted</span></td>
 			    {% else %}
-			    	<td></td>
+			    	<td><span id="id_result_{{each_data.questionnaire_uuid}}"></span>&nbsp;<a href="javascript:void(0)" class="cls_completion" id="id_txt_{{each_data.questionnaire_uuid}}" q_uuid="{{each_data.questionnaire_uuid}}">Get completion %</a></td>
 			    	<td><span class="glyphicon"></span></td>
 			    {% endif %}
 			    <td> 
@@ -59,6 +58,30 @@
 	<div class="row">
 		<div class="col"><a href="create_questionnaire/"><button type="button" class="btn btn-secondary">Create New Questionnaire</button></a></div>
 	</div>
+
+<script>
+
+	$(".cls_completion").click(function(e){
+
+		console.log("Its here...")
+		e.preventDefault();
+
+		questionnaire_uuid = $(this).attr('q_uuid')
+		app_url = "/app/get_application_progress/"+questionnaire_uuid
+
+		$.ajax(
+			{url: app_url, 
+			success: function(result){
+				console.log(result)
+	    		$('#id_result_'+questionnaire_uuid).text(result)
+	    		$('#id_txt_'+questionnaire_uuid).text("Refresh completion %")
+			}
+		});
+
+	});
+
+
+</script>
 
 
 {% endblock %}
